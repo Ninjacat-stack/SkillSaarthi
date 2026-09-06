@@ -2,6 +2,25 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import logo from '../../assets/skillsaarthi_logo.webp'
 
+const SUPPORT_EMAIL = 'skillsaarthi.support@gmail.com'
+const SUPPORT_SUBJECT = 'SkillSaarthi Support Request'
+const SUPPORT_BODY = `Hello SkillSaarthi Team,
+
+I need assistance regarding:
+
+[Please describe your issue or query here.]
+
+Thank you.`
+
+function openSupportGmail() {
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(SUPPORT_EMAIL)}&su=${encodeURIComponent(SUPPORT_SUBJECT)}&body=${encodeURIComponent(SUPPORT_BODY)}`
+  const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(SUPPORT_SUBJECT)}&body=${encodeURIComponent(SUPPORT_BODY)}`
+  const win = window.open(gmailUrl, '_blank', 'noopener,noreferrer')
+  if (!win) {
+    window.location.href = mailtoUrl
+  }
+}
+
 export default function Footer() {
   const { user } = useAuth()
 
@@ -60,7 +79,22 @@ export default function Footer() {
           <p className="text-sm font-bold text-white">About</p>
           <ul className="mt-3 space-y-2 text-sm text-slate-400">
             <li><Link to="/" className="hover:text-white">Our mission</Link></li>
-            <li><Link to="/" className="hover:text-white">Contact</Link></li>
+            <li>
+              <button
+                type="button"
+                onClick={openSupportGmail}
+                className="inline-flex items-center gap-1.5 text-left hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-deep rounded"
+                aria-label="Contact Support via Gmail"
+              >
+                Contact Support
+                <span className="rounded bg-white/10 px-1.5 py-0.5 text-[11px] font-bold tracking-wide text-white">Gmail</span>
+              </button>
+            </li>
+            <li className="pt-1">
+              <span className="text-xs text-slate-500 cursor-default select-text">
+                {SUPPORT_EMAIL}
+              </span>
+            </li>
           </ul>
         </div>
       </div>
