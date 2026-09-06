@@ -54,6 +54,54 @@ function preferencesComplete(profile) {
   )
 }
 
+function ScrollToTopButton() {
+  const [visible, setVisible] = useState(false)
+
+  const getScrollContainer = () => {
+    const container = document.querySelector('[data-onboarding-scroll]')
+    if (container && container.scrollHeight > container.clientHeight) return container
+    return null
+  }
+
+  useEffect(() => {
+    const onScroll = () => {
+      const container = getScrollContainer()
+      const scrollTop = container ? container.scrollTop : window.scrollY
+      setVisible(scrollTop > 350)
+    }
+    const container = getScrollContainer()
+    const target = container || window
+    target.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => target.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    const container = getScrollContainer()
+    if (container) {
+      container.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
+  if (!visible) return null
+
+  return (
+    <button
+      type="button"
+      onClick={scrollToTop}
+      aria-label="Scroll to top"
+      className="fixed bottom-6 right-6 z-40 grid h-11 w-11 place-items-center rounded-full bg-brand text-white shadow-popover ring-1 ring-brand/20 transition-all hover:bg-brand-hover hover:shadow-modal active:bg-brand-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:bottom-8 sm:right-8 max-sm:bottom-20"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M12 19V5" />
+        <path d="M5 12l7-7 7 7" />
+      </svg>
+    </button>
+  )
+}
+
 export default function Onboarding() {
   const { user, profile, refreshProfile } = useAuth()
   const navigate = useNavigate()
@@ -132,6 +180,14 @@ export default function Onboarding() {
       mounted = false
     }
   }, [user.$id])
+
+  // Smooth scroll to top when navigating between steps (step is state-based, not route-based)
+  useEffect(() => {
+    const container = document.querySelector('[data-onboarding-scroll]')
+    const isScrollable = container && container.scrollHeight > container.clientHeight
+    if (isScrollable) container.scrollTo({ top: 0, behavior: 'smooth' })
+    else window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [step, goalsSubStep, skillsInterestsTab])
 
   const handleError = useCallback((err) => {
     setError(err?.message || 'Something went wrong. Please try again.')
@@ -447,6 +503,7 @@ export default function Onboarding() {
         )}
       </main>
 
+      <ScrollToTopButton />
       <Footer />
     </div>
   )
