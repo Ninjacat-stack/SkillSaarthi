@@ -147,11 +147,8 @@ function Community() {
   const hasMore = posts.length < total
 
   const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1)
-    } else {
-      navigate('/home')
-    }
+    if (window.history.length > 1) navigate(-1)
+    else navigate('/home')
   }
 
   return (
@@ -159,15 +156,9 @@ function Community() {
       <TopBar />
 
       <main className="mx-auto max-w-7xl px-6 py-10">
-        <div className="min-[1070px]:hidden mb-4">
-          <button
-            type="button"
-            onClick={handleBack}
-            aria-label="Go back"
-            className="inline-flex items-center gap-1.5 rounded-md border border-line bg-white px-3 py-1.5 text-sm font-bold text-ink shadow-sm transition-colors hover:bg-surface-hover active:bg-surface-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
-          >
-            <Icon name="chevron-left" size={16} />
-            Back
+        <div className="min-[1070px]:hidden mb-2 -ml-1">
+          <button type="button" onClick={handleBack} aria-label="Go back" className="btn-text !text-sm">
+            ← Back
           </button>
         </div>
         <div className="flex flex-wrap items-end justify-between gap-4">
