@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import TopBar from '../../components/layout/TopBar'
 import Footer from '../../components/layout/Footer'
 import PostCard from '../../components/community/PostCard'
@@ -19,7 +19,6 @@ const PAGE_SIZE = 20
 
 function Community() {
   const { user } = useAuth()
-  const navigate = useNavigate()
   const [posts, setPosts] = useState([])
   const [total, setTotal] = useState(0)
   const [category, setCategory] = useState('')
@@ -146,21 +145,11 @@ function Community() {
 
   const hasMore = posts.length < total
 
-  const handleBack = () => {
-    if (window.history.length > 1) navigate(-1)
-    else navigate('/home')
-  }
-
   return (
     <div className="min-h-screen">
       <TopBar />
 
       <main className="mx-auto max-w-7xl px-6 py-10">
-        <div className="min-[1070px]:hidden mb-2 -ml-1">
-          <button type="button" onClick={handleBack} aria-label="Go back" className="btn-text !text-sm">
-            ← Back
-          </button>
-        </div>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.08em]">Community</p>
